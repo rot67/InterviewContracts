@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: ISC
-pragma solidity 0.8.2;
+pragma solidity ^0.8.2;
 
 // @notice This contract allows user to buy tickets for an event.
 contract PrivateSale {
