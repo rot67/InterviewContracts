@@ -3,19 +3,17 @@ pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
 import "./HalbornInterface.sol";
 
 /**
   *  @title A smart-contract that plays the role of a DeFi protocol where users can deposit and earn interests
   */
-contract HalbornPool is HalbornInterface {
+contract DefiPool is HalbornInterface {
 
     /**
      * @dev An instance of ERC20 HAL Token
      */
-     IERC20 private Hal;
+     IERC20 private HAL;
 
     /**
      * @dev Balance of each user address
@@ -50,7 +48,7 @@ contract HalbornPool is HalbornInterface {
      * @param _tokenAddress address of the HAL ERC20 token
      */
     constructor(address _tokenAddress) {
-        Hal = IERC20(_tokenAddress);
+        HAL = IERC20(_tokenAddress);
     }
 
     /**
@@ -63,7 +61,7 @@ contract HalbornPool is HalbornInterface {
     {
         require(_amount >= 10, "Error, deposit must be >= 10 HAL");
 
-        Hal.transferFrom(_sender, address(this), _amount);
+        HAL.transferFrom(_sender, address(this), _amount);
 
         userBalance[_sender] = userBalance[_sender] + _amount;
 
@@ -93,7 +91,7 @@ contract HalbornPool is HalbornInterface {
         interests[_user] = interestPerSecond * time;
         uint initialUserBalance = userBalance[_user];
         userBalance[_user] = userBalance[_user] + interests[msg.sender];
-        Hal.transfer(_user, userBalance[_user]);
+        HAL.transfer(_user, userBalance[_user]);
         userBalance[_user] = userBalance[_user] - initialUserBalance;
     }
 
@@ -104,8 +102,9 @@ contract HalbornPool is HalbornInterface {
         public view override
         returns (uint256)
     {
-        return Hal.balanceOf(address(this));
+        return HAL.balanceOf(address(this));
     }
+}
 //    function emergencyWithdraw(address _token, uint _amount, address _to) external onlyOwner {
 //        _safeTransfer(_token, _to, _amount);
 //
