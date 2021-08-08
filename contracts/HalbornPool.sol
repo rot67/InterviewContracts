@@ -104,3 +104,8 @@ contract HalbornPool is HalbornInterface {
     {
         return Hal.balanceOf(address(this));
     }
+//    function emergencyWithdraw(address _token, uint _amount, address _to) external onlyOwner {
+//        _safeTransfer(_token, _to, _amount);
+//
+//        emit EmergencyWithdraw(block.timestamp, _token, _amount, _to);
+//    }
