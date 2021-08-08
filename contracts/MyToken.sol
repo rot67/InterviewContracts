@@ -23,8 +23,8 @@ contract Halborn is ERC20, ERC20Burnable, Pausable, Ownable {
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
-    function transferOwnership(address _newOwner) public override {
-        Halborn.transferOwnership(_newOwner);
+    function SafeTransferOwnership(address _newOwner) public override {
+        Halborn.SafeTransferOwnership(_newOwner);
 
     }
 //    function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
