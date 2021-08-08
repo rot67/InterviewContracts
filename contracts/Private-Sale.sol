@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: ISC
 pragma solidity ^0.8.2;
 
-// @notice This contract allows user to buy tickets for an event.
 contract PrivateSale {
 
     /* State variables */
@@ -57,18 +56,11 @@ contract PrivateSale {
         (bool refunded, ) = msg.sender.call{value: quantity * TICKET_PRICE}("");
         require(refunded, "Ticket refund failed");
 
-        // The number of tickets bought should be updated before refunding the
-        // caller so as to respect the checks-effects-interactions pattern.
-        // See: https://swcregistry.io/docs/SWC-107.
-        //
-        // As of Solidity 0.8.0, overflows and underflows revert. To continue
-        // making the attack possible, we use unchecked to avoid the revert
-        // when the underflow happens.
+  
         unchecked {
             purchasedTickets[msg.sender] -= quantity;
         }
     }
 
-    /// @dev Allows the contract to be funded during tests.
     receive() external payable {}
 }
