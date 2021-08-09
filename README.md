@@ -15,14 +15,14 @@ We realized developers were lazy and they forgot including some files in the rep
 
 Finally, during the meetings with them they used to make some jokes about rug-pulls and they will deploy the contracts to the mainnet themselves.
 
-## MyToken.sol
+### MyToken.sol
 
 ERC20 implementation to mint Halborn Token (HAL)
 
-## HalbornPool.sol
+### HalbornPool.sol
 
 Awesome pool for receiving amazing rewards. 
 
-## Private-Sale.sol
+### Private-Sale.sol
 
 Sale for the private party.
