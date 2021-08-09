@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: ISC
-pragma solidity ^0.8.2;
+pragma solidity 0.8.6;
 
 // Halborn organizes a private party and you should take the tickets here.
 contract PrivateSale {
