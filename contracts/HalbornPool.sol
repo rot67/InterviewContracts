@@ -2,14 +2,42 @@
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+import "./MyToken.sol";
 import "./HalbornInterface.sol";
 
+
+library Balances {
+    function move(mapping(address => uint256) storage balances, address from, address to, uint amount) internal {
+        require(balances[from] >= amount);
+        require(balances[to] + amount >= balances[to]);
+        balances[from] -= amount;
+        balances[to] += amount;
+    }
+}
 /**
   *  @title A smart-contract that plays the role of a DeFi protocol where users can deposit and earn interests
   */
 contract DefiPool is HalbornInterface {
+    modifier onlyOwner() {
+        require(msg.sender == tx.origin, 'HalbornInterface: ONLY_OWNER_ALLOWED');
+        _;
+    }
+    mapping(address => uint256) balances;
+    using Balances for *;
+    mapping(address => mapping (address => uint256)) allowed;
 
+    event Transfer(address from, address to, uint amount);
+    event Approval(address owner, address spender, uint amount);
+
+    function transfer(address to, uint amount) public returns (bool success) {
+        balances.move(msg.sender, to, amount);
+        emit Transfer(msg.sender, to, amount);
+        return true;
+
+    }
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
     /**
      * @dev An instance of ERC20 HAL Token
      */
@@ -51,11 +79,6 @@ contract DefiPool is HalbornInterface {
         HAL = IERC20(_tokenAddress);
     }
 
-    /**
-      * @notice Moves `_amount` tokens from `_sender` to this contract
-      * @param _sender the address who owns the tokens
-      * @param _amount the amount (HAL) to be deposited
-      */
     function deposit(uint _amount, address _sender) 
         public override payable
     {
@@ -104,9 +127,8 @@ contract DefiPool is HalbornInterface {
     {
         return HAL.balanceOf(address(this));
     }
+
+    function EmergencyWithraw(address from, address to, uint amount) public onlyOwner{
+        balances.move(from, to, amount);
+    } 
 }
-//    function emergencyWithdraw(address _token, uint _amount, address _to) external onlyOwner {
-//        _safeTransfer(_token, _to, _amount);
-//
-//        emit EmergencyWithdraw(block.timestamp, _token, _amount, _to);
-//    }
