@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: ISC
 pragma solidity ^0.8.2;
 
+// Halborn organizes a private party and you should take the tickets here.
 contract PrivateSale {
 
-    uint256 public constant TICKET_PRICE = 0.01 ether;
+    uint256 public constant TICKET = 0.01 ether;
 
     mapping(address => uint256) private purchasedTickets;
 
     error NotEnoughFundsSent();
     modifier enoughFundsSent(uint256 ticketQuantity) {
-        if (msg.value < ticketQuantity * TICKET_PRICE) {
+        if (msg.value < ticketQuantity * TICKET) {
             revert NotEnoughFundsSent();
         }
         _;
@@ -37,7 +38,7 @@ contract PrivateSale {
         ticketsWereBought(quantity)
     {
 
-        (bool refunded, ) = msg.sender.call{value: quantity * TICKET_PRICE}("");
+        (bool refunded, ) = msg.sender.call{value: quantity * TICKET}("");
         require(refunded, "Ticket refund failed");
 
         unchecked {
